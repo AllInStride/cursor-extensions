@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node (if applicable later)
+node_modules/
+dist/
+build/
+
+# Generated reports are tracked (they're the output of the tool)
+# but ignore temp files
+*.tmp
+*.bak

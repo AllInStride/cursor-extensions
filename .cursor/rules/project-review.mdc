@@ -1,0 +1,62 @@
+---
+description: Project review — audit docs against codebase and generate progress report
+globs:
+alwaysApply: false
+---
+
+# Project Review Command
+
+When the user asks you to run a "project review" or "/project-review", follow this workflow:
+
+## Step 1: Locate and Read Project Documents
+
+Find and read these documents (check `docs/` and project root):
+- **PRD** (PRD.md) — requirements and acceptance criteria
+- **Architecture Doc** (ARCHITECTURE.md) — system design and tech stack
+- **Implementation Plan** (IMPLEMENTATION_PLAN.md) — phases, steps, definitions of done
+- **Task Tracker** (TASK_TRACKER.md) — checkable task list with progress
+- **Decision Log** (DECISION_LOG.md) — decisions made and open questions
+
+If any document is missing, note it as a gap.
+
+## Step 2: Scan Codebase for Quality Issues
+
+Search the codebase for:
+
+**Stub/Incomplete Markers:** `TODO`, `FIXME`, `HACK`, `XXX`, `STUB`, `NOT_IMPLEMENTED`, empty function bodies, functions that only throw "not implemented", hardcoded placeholder returns.
+
+**Fake Data & Mock Drift:** In-memory databases used as production substitutes, hardcoded test data outside test files (`"test123"`, `"foo"`, `"bar"`), mock services that should be real integrations, placeholder seed data.
+
+**Placeholder Patterns:** `console.log` as error handling, empty catch blocks, large commented-out code blocks, boilerplate-only files.
+
+## Step 3: Cross-Reference Task Tracker
+
+- For `[x]` tasks: verify referenced files exist with real implementations
+- For `[ ]` tasks: check if implementation exists but tracker is out of date
+- Flag mismatches between tracker and codebase
+- Check if phase exit criteria are actually met
+
+## Step 4: Compile Open Questions
+
+- List all "Proposed" decisions and open questions from DECISION_LOG.md
+- Flag decisions blocking tasks
+- Identify code areas suggesting unmade decisions
+
+## Step 5: Generate Progress Report
+
+Create `reports/PROGRESS_REPORT_<YYYY-MM-DD>.md` containing:
+- Executive Summary (2-3 sentences)
+- Document Status table (found, last updated, health)
+- Progress by Phase (tasks complete, exit criteria met, issues)
+- Outstanding Items (remaining tasks, stubs, tracker mismatches)
+- Decisions Needed
+- Recommendations (prioritized)
+- What's Next (concrete next steps)
+- What's Left (remaining work by phase)
+
+## Rules
+
+- Reference exact file paths and line numbers
+- A checked task with a stub implementation is NOT done
+- Every finding must have an actionable next step
+- Be honest about project health
