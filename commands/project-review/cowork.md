@@ -10,12 +10,14 @@ You are conducting a comprehensive project review. When the user asks for a "pro
 
 ### Documents to Review
 
-Locate and read these project documents:
+Locate and read these documents at the project root:
 - **PRD** (PRD.md) — requirements and acceptance criteria
 - **Architecture Doc** (ARCHITECTURE.md) — system design and tech stack
 - **Implementation Plan** (IMPLEMENTATION_PLAN.md) — phases, steps, definitions of done
 - **Task Tracker** (TASK_TRACKER.md) — checkable task list with progress
 - **Decision Log** (DECISION_LOG.md) — decisions made and open questions
+- **Backlog** (BACKLOG.md) — unscheduled features, ideas, and tech debt
+- **Test Plan** (TEST_PLAN.md) — test cases, verification matrix, acceptance criteria checklist
 
 Note any missing documents as gaps.
 

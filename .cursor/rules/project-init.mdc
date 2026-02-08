@@ -1,0 +1,53 @@
+---
+description: Initialize a project with required documents — evaluates existing context first
+globs:
+alwaysApply: false
+---
+
+# Project Init Command
+
+When the user asks to "initialize project", "project init", or "/project-init", follow this workflow:
+
+## Step 1: Evaluate Existing Context
+
+Before asking anything, scan the working directory:
+
+**Look for:** README.md, package.json, Cargo.toml, pyproject.toml, go.mod, CLAUDE.md, .cursorrules, docker-compose.yml, .env.example, schema.prisma, migrations/, tsconfig.json, vite/next/webpack configs, src/, app/, lib/, api/, existing test setup (tests/, __tests__/, spec/, jest/vitest/pytest config), and any existing planning docs.
+
+**Extract:** project name, problem statement, tech stack, data models, integrations, architecture from directory structure, current code state (greenfield/early/in-progress/mature).
+
+**Output a sufficiency report** showing what was found, what can be auto-filled, and what gaps remain.
+
+## Step 2: Check for Existing Documents
+
+Check project root for: PRD.md, ARCHITECTURE.md, IMPLEMENTATION_PLAN.md, TASK_TRACKER.md, DECISION_LOG.md, BACKLOG.md, TEST_PLAN.md. If any exist, ask: skip, overwrite, or merge. Create `reports/` if missing.
+
+## Step 3: Create Documents at Project Root
+
+Create all seven documents at the **project root** (not in a subdirectory). Pre-fill from codebase context.
+
+## Step 4: Interactive Gap-Filling
+
+Only ask about what the codebase doesn't answer. Skip covered rounds.
+
+**Round 1 — Identity** (skip if README covers): Problem statement, primary user.
+**Round 2 — Scope** (skip if code/docs cover): Core features, out of scope, constraints.
+**Round 3 — Technical** (skip if extractable): Confirm tech stack, database, integrations.
+**Round 4 — Phases:** Phase count, goals, Phase 1 definition of done.
+
+## Step 5: Tasks & Backlog
+
+**Task Tracker:** Break Phase 1 into tasks (T-001 pattern). Phase 2/3 as placeholders.
+
+**Backlog:** Capture unscheduled features, nice-to-haves, tech debt, ideas. Each: ID (BL-001), description, priority (P0-P3), source.
+
+## Step 6: Decisions & Summary
+
+Record DEC-001 (tech stack). Add gaps to Open Questions. Show summary with auto-filled vs interview-filled vs needs-attention breakdown. Remind user to run `/verify` after each phase.
+
+## Rules
+
+- Extract before asking — don't ask what the codebase answers
+- Documents at project root, not subdirectory
+- Never leave sections blank — fill or mark as Open Question
+- Task IDs: T-001+, Backlog: BL-001+

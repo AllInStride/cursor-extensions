@@ -1,0 +1,67 @@
+---
+description: Verify implementations against PRD acceptance criteria, task DoDs, and test plan
+globs:
+alwaysApply: false
+---
+
+# Verify Command
+
+When the user asks to "verify", "/verify", or "run verification", perform a systematic requirements verification audit.
+
+This is NOT a code review. This checks whether what was built actually meets what was promised.
+
+## Step 1: Load Sources
+
+Read at the project root: PRD.md (acceptance criteria), IMPLEMENTATION_PLAN.md (phase exit criteria), TASK_TRACKER.md (task DoDs), TEST_PLAN.md (test cases and verification matrix).
+
+Report any missing documents and what can't be verified without them.
+
+## Step 2: Build Verification Checklist
+
+Extract every verifiable claim:
+1. Every acceptance criterion from PRD user stories
+2. Every phase exit criterion from Implementation Plan
+3. Every DoD from completed tasks in Task Tracker
+4. Every test case and expected result from Test Plan
+
+## Step 3: Verify Each Item
+
+For each checklist item, check against the codebase:
+
+**Does code exist?** Find the implementing files/functions. No code = FAIL.
+
+**Is it real?** Read the code. Check for: `throw "not implemented"`, empty bodies, TODOs, hardcoded returns, in-memory stores as DB substitutes, mock services in production, placeholder data. Stubs = FAIL.
+
+**Does it meet the criterion?** Does behavior match what the acceptance criterion says? Does it handle implied edge cases? Does it use real infrastructure? Mismatch = FAIL.
+
+**Is it tested?** Find test files. Do tests assert actual acceptance criteria? Do they use realistic data? No tests = WARN.
+
+## Step 4: Phase Exit Verification
+
+For each phase marked complete: verify every exit criterion. A phase is NOT complete if any criterion fails.
+
+## Step 5: Test Plan Check
+
+Cross-reference test files against TEST_PLAN.md cases. Run test suite if possible. Flag gaps: requirements with no test cases, test cases marked Pass with no automated test.
+
+## Step 6: Generate Report
+
+Create `reports/VERIFICATION_REPORT_<YYYY-MM-DD>.md` containing:
+- Summary table: Total / Verified / Failed / Warned per category
+- Overall verdict: PASS / PARTIAL / FAIL
+- Detailed results per acceptance criterion, task DoD, phase exit criterion, test case
+- Failures list (claimed done but not implemented or stubbed)
+- Warnings list (implemented but not tested)
+- Stub & fake inventory (file, line, type)
+- Recommendations and ship-blockers
+
+Update TEST_PLAN.md with findings.
+
+## Rules
+
+- Verify against the CODEBASE, not the documents
+- Checked checkbox with no real code = FAIL
+- "It compiles" is not verification — "it does what the criterion says" is
+- Reference exact file paths and line numbers
+- Run automated tests when possible
+- Be blunt about actual state

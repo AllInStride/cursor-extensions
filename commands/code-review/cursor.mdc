@@ -1,0 +1,74 @@
+---
+description: Code review — thorough review of changes with structured findings and security checks
+globs:
+alwaysApply: false
+---
+
+# Code Review Command
+
+When the user asks you to run a "code review" or "/code-review", follow this workflow:
+
+## Step 1: Identify Review Scope
+
+- If the user specifies files: review those files
+- If the user specifies a PR: fetch and review that PR's diff
+- If no scope given: review all uncommitted changes and branch commits not on main/master
+- Run `git log --oneline main..HEAD` to understand full branch context
+
+## Step 2: Read Project Context
+
+Before reviewing, read these docs if they exist to prevent reviewing in a vacuum:
+- **PRD** — does the change align with requirements?
+- **Architecture Doc** — does it follow established patterns?
+- **Implementation Plan** — does this correspond to a planned task?
+- **Task Tracker** — which task(s) does this address?
+
+## Step 3: Review for Correctness
+
+**Logic & Behavior:** Does code do what it claims? Off-by-one errors? Race conditions? Error paths handled? Null/undefined handled?
+
+**Completeness:** Are there stubs/TODOs? All conditional branches handled? All acceptance criteria from PRD covered?
+
+**Integration:** Does it break anything? Imports/exports correct? API contracts maintained? DB migrations match models?
+
+## Step 4: Review for Quality
+
+**Security (OWASP):** SQL injection, XSS, auth enforcement, hardcoded secrets, CSRF, input validation at boundaries.
+
+**Performance:** N+1 queries, unbounded loops, missing pagination, unnecessary re-renders, large uncompressed payloads.
+
+**Maintainability:** Readable without excessive comments? Descriptive names? No premature abstraction? No magic numbers?
+
+**Testing:** Tests exist? Edge cases covered? Tests check behavior not just mocks?
+
+## Step 5: Flag Anti-Patterns
+
+- Stub drift (TODO/not-implemented committed)
+- Fake data in production code
+- Console.log debugging left in
+- Empty catch blocks
+- Commented-out dead code
+- God functions (>50 lines)
+- Deep nesting (>3 levels)
+
+## Step 6: Output Review
+
+Structure your review as:
+
+1. **Summary** — 1-2 sentence verdict (ship it / needs changes / needs rework)
+2. **Critical findings** — Must fix before merge (file, line, issue, suggestion)
+3. **Important findings** — Should fix (file, line, issue, suggestion)
+4. **Minor findings** — Nice to have
+5. **Positive findings** — Good patterns and clean implementations
+6. **Security Checklist** — No secrets, input validated, auth enforced, no injection vectors
+7. **Test Coverage** — New code tested, edge cases, meaningful tests
+8. **Verdict** — APPROVE / REQUEST_CHANGES / COMMENT
+
+## Rules
+
+- Always include file path and line number
+- Every criticism must include a concrete suggestion
+- Don't nitpick formatting when there are logic bugs
+- Prioritize: Critical > Important > Minor
+- Always acknowledge good work
+- No false positives — only flag issues you're confident about
