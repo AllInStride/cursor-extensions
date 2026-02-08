@@ -1,0 +1,9 @@
+{
+  "name": "cursor-extensions",
+  "description": "Project management commands: init, review, verify, code-review, session-summary, and generate-command",
+  "version": "1.0.0",
+  "author": {
+    "name": "AllInStride"
+  },
+  "repository": "https://github.com/AllInStride/cursor-extensions"
+}

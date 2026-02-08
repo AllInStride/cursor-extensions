@@ -50,9 +50,13 @@ When the user asks to run "[command-name]" or "/<command-name>", follow this wor
 [Same core logic as Claude Code version, adapted for Cursor's context]
 ```
 
-### 3. Claude Cowork / System Prompt
-**Path:** `commands/<command-name>/cowork.md`
-**Format:** Portable markdown that can be pasted into Claude.ai Projects or used as a system prompt.
+### 3. Claude Cowork Plugin Command
+**Path:** `plugin/commands/<command-name>.md`
+**Format:** Same as Claude Code (markdown with `$ARGUMENTS`). Cowork uses the same command format, just packaged as a plugin.
+
+Also create a portable version:
+**Path:** `commands/<command-name>/portable.md`
+**Format:** System prompt version for Claude.ai Projects or non-Claude LLMs.
 
 Structure:
 ```
@@ -85,15 +89,15 @@ Structure:
 6. **Show** the user a summary of what was created:
 
 ```
-Created 3 command files:
+Created command files:
   .claude/commands/<name>.md          — Claude Code (/name)
   .cursor/rules/<name>.mdc            — Cursor rule
-  commands/<name>/cowork.md           — Claude Cowork / System Prompt
+  plugin/commands/<name>.md           — Cowork plugin command
 
-Also saved source copies to:
-  commands/<name>/claude-code.md
-  commands/<name>/cursor.mdc
-  commands/<name>/cowork.md
+Source copies:
+  commands/<name>/claude-code.md      — Claude Code source
+  commands/<name>/cursor.mdc          — Cursor source
+  commands/<name>/portable.md         — Portable system prompt version
 ```
 
 ## Quality Rules

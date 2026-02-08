@@ -1,0 +1,86 @@
+---
+description: Generate a new slash command for Claude Code, Cursor, and Cowork from a single description
+globs:
+alwaysApply: false
+---
+
+# Generate Command
+
+When the user asks to "generate command", "create command", or "/generate-command", follow this workflow to produce a new command for all three AI coding tools.
+
+## Input
+
+Get from the user:
+- **Command name** (e.g., `security-audit`, `dependency-check`)
+- **Description** of what the command should do
+- **Optional:** specific arguments the command accepts
+
+If no name provided, suggest one and confirm.
+
+## Output — Three Files Per Command
+
+### 1. Claude Code Command
+**Path:** `.claude/commands/<command-name>.md`
+**Format:** Plain markdown. Use `$ARGUMENTS` for user-provided arguments.
+```
+[Direct instruction to Claude]
+## Step 1: [action]
+## Step 2: [action]
+## Rules
+```
+
+### 2. Cursor Rule
+**Path:** `.cursor/rules/<command-name>.mdc`
+**Format:** MDC with YAML frontmatter.
+```
+---
+description: [one-line]
+globs:
+alwaysApply: false
+---
+# [Command Name]
+When the user asks to run "<command-name>" or "/<command-name>":
+[workflow]
+```
+
+### 3. Claude Cowork / System Prompt
+**Path:** `commands/<command-name>/cowork.md`
+**Format:** Portable markdown for Claude.ai Projects or system prompts.
+```
+# [Name] — Claude Cowork / Claude.ai Project Instruction
+> **Usage:** Paste into Claude.ai Project or use as system prompt.
+---
+## Instruction
+[core logic as system instruction]
+### Rules
+```
+
+## Process
+
+1. Get command name and purpose from user
+2. Design the command logic — break into clear steps
+3. Identify decision points where user should weigh in
+4. Present proposed steps, get confirmation
+5. Generate all three files plus source copies in `commands/<name>/`
+6. Show summary:
+```
+Created 3 command files:
+  .claude/commands/<name>.md          — Claude Code
+  .cursor/rules/<name>.mdc            — Cursor
+  commands/<name>/cowork.md           — Cowork
+
+Source copies saved to:
+  commands/<name>/claude-code.md
+  commands/<name>/cursor.mdc
+  commands/<name>/cowork.md
+```
+
+## Quality Rules
+
+- Commands must be specific and actionable — not vague
+- Define what to scan, what to check, and what to output
+- Include concrete pattern examples
+- Define output format explicitly (report structure, file path)
+- Reference project documents where applicable (PRD, Architecture, Task Tracker, Test Plan, etc.)
+- Keep three versions consistent — same logic, adapted per format
+- If command generates a file, specify path and naming convention
