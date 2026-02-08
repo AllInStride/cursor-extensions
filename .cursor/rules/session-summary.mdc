@@ -1,0 +1,84 @@
+---
+description: End-of-session summary — captures context, updates docs, builds persistent memory
+globs:
+alwaysApply: false
+---
+
+# Session Summary Command
+
+When the user asks to "summarize session", "/session-summary", or "wrap up", generate an end-of-session summary that captures context for continuity and updates project documents.
+
+## Step 1: Analyze the Session
+
+Review the conversation and extract:
+
+**What happened:** Session goal, project path, what was accomplished (specific files/features/fixes), what's in progress, exact point where work stopped.
+
+**Decisions:** Choices made, rationale, alternatives rejected.
+
+**Problems:** Errors encountered, how resolved, what was tried that didn't work, remaining blockers.
+
+**Learnings:** Project knowledge gained, user preferences observed, technical insights.
+
+## Step 2: Update Project Documents
+
+If the project uses the standard document set, update:
+
+**Task Tracker** — Check off completed tasks, update in-progress status, add discovered tasks, update summary counts.
+
+**Decision Log** — Add new decisions (DEC-XXX), resolve open questions, add new questions.
+
+**Backlog** — Add ideas, tech debt, future work found during session.
+
+**Test Plan** — Update test statuses, add new test cases, log test runs.
+
+Skip documents that don't exist.
+
+## Step 3: Write Session Summary
+
+Save to `~/.claude/sessions/<project-name>_<YYYY-MM-DD>_<HH-MM>.md`:
+
+Contents:
+- Session metadata (date, project, duration context)
+- Goal and accomplishments
+- In-progress items and exact pickup point
+- Decisions table (decision, choice, rationale, rejected alternatives)
+- What didn't work (failed approaches — prevents repeating)
+- Blockers and open questions
+- Learnings (project knowledge, user preferences, technical insights)
+- Documents updated checklist
+- Next session priorities (numbered, specific)
+
+## Step 4: Update Persistent Memory
+
+Read `~/.claude/memory/MEMORY.md` or project auto-memory. Promote only durable cross-session insights: consistent user preferences, architecture patterns, tool gotchas, workflow patterns.
+
+Don't add: session-specific details, resolved temp blockers, one-off decisions.
+
+Keep MEMORY.md under 200 lines. Remove entries this session proved wrong.
+
+## Step 5: Meta-Reflection
+
+Add to the summary:
+- What worked well this session (approach, communication, tools)
+- What could improve (lost time, miscommunication, wrong assumptions)
+- Which memory entries were useful vs noise
+
+## Step 6: Show Compact Summary
+
+```
+Session saved: ~/.claude/sessions/<filename>.md
+Accomplished: [1-2 lines]
+Pick up next: [1 line]
+Docs updated: [list]
+Memory updated: [what changed]
+```
+
+## Rules
+
+- Always write the file — even short sessions matter
+- Be specific about pickup point (file, function, state)
+- Capture what didn't work, not just what did
+- Observe user preferences, don't assume them
+- MEMORY.md stays under 200 lines
+- Never edit/delete previous session files
